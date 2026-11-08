@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fisioterapia Elizete Conceição - Agendamento</title>
+    <style>
+        :root {
+            --primary: #00c8d4;
+            --primary-dark: #0098a6;
+            --secondary: #7b68ee;
+            --dark: #0a1628;
+            --dark-card: #132238;
+            --text: #e8f4f8;
+            --text-muted: #a0c4d0;
+            --success: #00e676;
+            --glass: rgba(19, 34, 56, 0.7);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0a1628 0%, #1a2a4a 50%, #0d1b2a 100%);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(180deg, rgba(0,200,212,0.15) 0%, transparent 100%);
+            border-bottom: 1px solid rgba(0,200,212,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0,200,212,0.1) 0%, transparent 70%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .logo-ec {
+            font-size: 5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #00c8d4, #7b68ee, #00e676);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -5px;
+            line-height: 1;
+            margin-bottom: 10px;
+            text-shadow: 0 0 40px rgba(0,200,212,0.5);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .contact-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--primary);
+            color: #000;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            box-shadow: 0 4px 20px rgba(0,200,212,0.4);
+        }
+
+        .contact-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(0,200,212,0.6);
+        }
+
+        .hours {
+            margin-top: 15px;
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        section {
+            padding: 40px 0;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: var(--primary);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .service-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0,200,212,0.2);
+            border-radius: 16px;
+            padding: 25px;
+            cursor: default;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card:hover {
+            border-color: rgba(0,200,212,0.4);
+        }
+
+        .service-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        .service-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .service-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .booking-section {
+            background: var(--dark-card);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(0,200,212,0.2);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid rgba(0,200,212,0.3);
+            border-radius: 12px;
+            background: rgba(10, 22, 40, 0.8);
+            color: var(--text);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0,200,212,0.2);
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        .time-slot {
+            padding: 12px;
+            text-align: center;
+            background: rgba(0,200,212,0.1);
+            border: 1px solid rgba(0,200,212,0.3);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .time-slot:hover {
+            background: rgba(0,200,212,0.2);
+        }
+
+        .time-slot.selected {
+            background: var(--primary);
+            color: #000;
+            border-color: var(--primary);
+        }
+
+        .time-slot.unavailable {
+            opacity: 0.4;
+            cursor: not-allowed;
+            text-decoration: line-through;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #000;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,200,212,0.5);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            width: 100%;
+            padding: 14px;
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0,200,212,0.15);
+        }
+
+        .appointments-panel {
+            display: none;
+            margin-top: 30px;
+            background: var(--dark-card);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(0,200,212,0.2);
+        }
+
+        .appointments-panel.show {
+            display: block;
+        }
+
+        .appointment-item {
+            background: rgba(0,200,212,0.08);
+            border: 1px solid rgba(0,200,212,0.2);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .appointment-info strong {
+            color: var(--primary);
+        }
+
+        .btn-delete {
+            background: #ff5252;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        .btn-delete:hover {
+            background: #ff1744;
+        }
+
+        .empty-message {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 20px;
+        }
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #25D366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.5);
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(0,200,212,0.1);
+            margin-top: 40px;
+        }
+
+        .error-message {
+            background: rgba(255, 82, 82, 0.15);
+            border: 1px solid #ff5252;
+            color: #ff8a80;
+            padding: 14px 16px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: none;
+            font-weight: 500;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: shake 0.4s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .service-selector {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .service-selector-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 16px;
+            background: rgba(10, 22, 40, 0.8);
+            border: 1px solid rgba(0,200,212,0.3);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .service-selector-header:hover {
+            border-color: var(--primary);
+        }
+
+        .service-selector-header .arrow {
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+            color: var(--primary);
+        }
+
+        .service-selector-header.open .arrow {
+            transform: rotate(180deg);
+        }
+
+        .service-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--dark-card);
+            border: 1px solid rgba(0,200,212,0.3);
+            border-radius: 12px;
+            margin-top: 5px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 100;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .service-dropdown.show {
+            display: block;
+        }
+
+        .service-option {
+            padding: 12px 16px;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(0,200,212,0.1);
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .service-option:hover {
+            background: rgba(0,200,212,0.15);
+        }
+
+        .service-option:last-child {
+            border-bottom: none;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8rem; }
+            .logo-ec { font-size: 3.5rem; }
+            .booking-section { padding: 25px; }
+            .services-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo-ec">EC</div>
+        <h1>FISIOTERAPIA</h1>
+        <p class="subtitle">Elizete Conceição</p>
+        <a href="https://wa.me/5594981072650" target="_blank" class="contact-badge">
+            📱 94 98107-2650
+        </a>
+        <p class="hours">Horário de atendimento: Segunda a Sábado • 14:30 às 19:00</p>
+    </header>
+
+    <div class="container">
+        <section>
+            <h2>Nossos Serviços</h2>
+            <div class="services-grid" id="servicesGrid">
+                <!-- Services will be populated by JS -->
+            </div>
+        </section>
+
+        <section>
+            <h2>Agende seu Horário</h2>
+            <div class="booking-section">
+                <div class="error-message" id="errorMessage"></div>
+                <div class="service-selector">
+                    <div class="service-selector-header" id="serviceSelectorHeader" onclick="toggleServiceDropdown()">
+                        <span id="selectedServiceText">Selecione um serviço</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="service-dropdown" id="serviceDropdown">
+                        <!-- Options populated by JS -->
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="clientName">Seu Nome *</label>
+                    <input type="text" id="clientName" placeholder="Digite seu nome completo" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="clientPhone">Seu WhatsApp *</label>
+                    <input type="tel" id="clientPhone" placeholder="(94) 9XXXX-XXXX" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="appointmentDate">Data * <small style="color: var(--text-muted);">(Segunda a Sábado)</small></label>
+                    <input type="date" id="appointmentDate" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Horário Disponível *</label>
+                    <div class="time-slots" id="timeSlots">
+                        <!-- Time slots populated by JS -->
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Observações (opcional)</label>
+                    <textarea id="notes" rows="3" placeholder="Alguma informação adicional?"></textarea>
+                </div>
+
+                <button class="btn-primary" id="bookBtn" disabled>Agendar via WhatsApp</button>
+                <button class="btn-secondary" id="viewAppointmentsBtn">Ver Agendamentos</button>
+            </div>
+
+            <div class="appointments-panel" id="appointmentsPanel">
+                <h3 style="color: var(--primary); margin-bottom: 20px; text-align: center;">Agendamentos Realizados</h3>
+                <div id="appointmentsList"></div>
+                <button class="btn-primary" id="sendListWhatsappBtn" style="margin-top: 15px; display: none;">Enviar lista para WhatsApp</button>
+            </div>
+        </section>
+    </div>
+
+    <a href="https://wa.me/5594981072650" target="_blank" class="whatsapp-float" title="Fale conosco">💬</a>
+
+    <footer>
+        <p>Fisioterapia Elizete Conceição</p>
+        <p>Agende o seu horário • Segunda a Sábado das 14:30 às 19h</p>
+    </footer>
+
+    <script>
+        // ========== CONFIGURAÇÃO DO FIREBASE ==========
+        // Substitua os valores abaixo pelos dados do seu projeto Firebase
+        const firebaseConfig = {
+            apiKey: "SUA_API_KEY_AQUI",
+            authDomain: "seu-projeto.firebaseapp.com",
+            databaseURL: "https://seu-projeto-default-rtdb.firebaseio.com",
+            projectId: "seu-projeto",
+            storageBucket: "seu-projeto.appspot.com",
+            messagingSenderId: "SEU_SENDER_ID",
+            appId: "SEU_APP_ID"
+        };
+
+        // Inicializa o Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const appointmentsRef = db.ref('agendamentos');
+
+        // Cache local dos agendamentos (atualizado em tempo real)
+        let appointmentsCache = [];
+
+        const services = [
+            { id: 'ventosa', name: 'Ventosaterapia', icon: '🫙', desc: 'Terapia com ventosas para alívio de dores e tensões musculares.' },
+            { id: 'drenagem', name: 'Drenagem Linfática', icon: '💧', desc: 'Massagem que estimula o sistema linfático, reduzindo inchaços.' },
+            { id: 'modeladora', name: 'Massagem Modeladora', icon: '✨', desc: 'Massagem para modelagem corporal e redução de medidas.' },
+            { id: 'terapeutica', name: 'Massagem Terapêutica', icon: '🖐️', desc: 'Massagem focada no tratamento de dores e lesões musculares.' },
+            { id: 'relaxante', name: 'Massagem Relaxante', icon: '🌿', desc: 'Massagem para relaxamento, redução de estresse e bem-estar.' },
+            { id: 'miofacial', name: 'Massagem Miofacial', icon: '💆', desc: 'Técnica para liberação de tensões na fáscia e músculos.' },
+            { id: 'fisio', name: 'Fisioterapia', icon: '🦴', desc: 'Avaliação e tratamento fisioterapêutico personalizado.' }
+        ];
+
+        const timeSlots = ['14:30', '15:30', '16:30', '17:30', '18:30'];
+
+        let selectedService = null;
+        let selectedTime = null;
+
+        function init() {
+            renderServices();
+            renderServiceDropdown();
+            setMinDate();
+            setupEventListeners();
+            startFirebaseListener();
+        }
+
+        function startFirebaseListener() {
+            appointmentsRef.on('value', (snapshot) => {
+                appointmentsCache = [];
+                const data = snapshot.val();
+                if (data) {
+                    Object.keys(data).forEach(key => {
+                        appointmentsCache.push({ id: key, ...data[key] });
+                    });
+                }
+                // Atualiza a interface sempre que houver mudança
+                renderTimeSlots();
+                const panel = document.getElementById('appointmentsPanel');
+                if (panel && panel.classList.contains('show')) {
+                    renderAppointmentsList();
+                }
+            }, (error) => {
+                console.error('Erro ao conectar com Firebase:', error);
+                alert('Não foi possível conectar ao banco de dados. Verifique a configuração do Firebase.');
+            });
+        }
+
+        function getAppointments() {
+            return appointmentsCache;
+        }
+
+        function saveAppointment(appointment) {
+            return appointmentsRef.push(appointment);
+        }
+
+        function deleteAppointmentFromDb(id) {
+            return appointmentsRef.child(id).remove();
+        }
+
+        function isSlotBooked(date, time) {
+            return appointmentsCache.some(a => a.date === date && a.time === time);
+        }
+
+        function renderServices() {
+            const grid = document.getElementById('servicesGrid');
+            if (!grid) return;
+            grid.innerHTML = services.map(s => `
+                <div class="service-card" data-id="${s.id}">
+                    <div class="service-icon">${s.icon}</div>
+                    <h3>${s.name}</h3>
+                    <p>${s.desc}</p>
+                </div>
+            `).join('');
+        }
+
+        function renderServiceDropdown() {
+            const dropdown = document.getElementById('serviceDropdown');
+            dropdown.innerHTML = services.map(s => `
+                <div class="service-option" onclick="selectService('${s.id}')">
+                    <span>${s.icon}</span>
+                    <span>${s.name}</span>
+                </div>
+            `).join('');
+        }
+
+        function toggleServiceDropdown() {
+            const header = document.getElementById('serviceSelectorHeader');
+            const dropdown = document.getElementById('serviceDropdown');
+            header.classList.toggle('open');
+            dropdown.classList.toggle('show');
+        }
+
+        function selectService(id) {
+            selectedService = services.find(s => s.id === id);
+            document.getElementById('selectedServiceText').innerHTML = `${selectedService.icon} ${selectedService.name}`;
+            
+            // Close dropdown
+            document.getElementById('serviceSelectorHeader').classList.remove('open');
+            document.getElementById('serviceDropdown').classList.remove('show');
+            
+            updateBookButton();
+        }
+
+        const STORAGE_KEY = 'elizete_agendamentos'; // mantido apenas como referência, não é mais usado
+
+        // Funções antigas de localStorage removidas — agora usamos Firebase
+
+        function isSlotBooked(date, time) {
+            return appointmentsCache.some(a => a.date === date && a.time === time);
+        }
+
+        function renderTimeSlots() {
+            const container = document.getElementById('timeSlots');
+            const date = document.getElementById('appointmentDate').value;
+            const now = new Date();
+            const isToday = date === now.toISOString().split('T')[0];
+
+            container.innerHTML = timeSlots.map(time => {
+                let isUnavailable = false;
+                let reason = '';
+
+                if (isToday) {
+                    const [h, m] = time.split(':').map(Number);
+                    const slotTime = new Date(now);
+                    slotTime.setHours(h, m, 0, 0);
+                    if (slotTime <= now) {
+                        isUnavailable = true;
+                        reason = 'passado';
+                    }
+                }
+
+                if (date && isSlotBooked(date, time)) {
+                    isUnavailable = true;
+                    reason = 'agendado';
+                }
+
+                const className = isUnavailable ? 'time-slot unavailable' : 'time-slot';
+                const onclick = isUnavailable ? '' : `onclick="selectTime('${time}')"`;
+                const title = reason === 'agendado' ? 'Horário já agendado' : (reason === 'passado' ? 'Horário já passou' : '');
+                return `<div class="${className}" data-time="${time}" ${onclick} title="${title}">${time}</div>`;
+            }).join('');
+        }
+
+        function selectTime(time) {
+            selectedTime = time;
+            document.querySelectorAll('.time-slot').forEach(slot => {
+                slot.classList.remove('selected');
+                if (slot.dataset.time === time) slot.classList.add('selected');
+            });
+            updateBookButton();
+        }
+
+        function setMinDate() {
+            const dateInput = document.getElementById('appointmentDate');
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            dateInput.min = `${yyyy}-${mm}-${dd}`;
+            dateInput.value = `${yyyy}-${mm}-${dd}`;
+        }
+
+        function setupEventListeners() {
+            document.getElementById('clientName').addEventListener('input', updateBookButton);
+            document.getElementById('clientPhone').addEventListener('input', updateBookButton);
+            document.getElementById('appointmentDate').addEventListener('change', () => {
+                selectedTime = null;
+                renderTimeSlots();
+                updateBookButton();
+            });
+            document.getElementById('bookBtn').addEventListener('click', bookAppointment);
+            document.getElementById('viewAppointmentsBtn').addEventListener('click', toggleAppointments);
+            document.getElementById('sendListWhatsappBtn').addEventListener('click', sendAppointmentsListToWhatsApp);
+        }
+
+        function toggleAppointments() {
+            const panel = document.getElementById('appointmentsPanel');
+            panel.classList.toggle('show');
+            if (panel.classList.contains('show')) {
+                renderAppointmentsList();
+                // Rola suavemente até a lista
+                setTimeout(() => {
+                    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            }
+        }
+
+        function renderAppointmentsList() {
+            const list = document.getElementById('appointmentsList');
+            const sendBtn = document.getElementById('sendListWhatsappBtn');
+            const appointments = getAppointments()
+                .sort((a, b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time));
+
+            if (appointments.length === 0) {
+                list.innerHTML = '<div class="empty-message">Nenhum agendamento realizado ainda.</div>';
+                if (sendBtn) sendBtn.style.display = 'none';
+                return;
+            }
+
+            if (sendBtn) sendBtn.style.display = 'block';
+
+            list.innerHTML = `
+                <p style="text-align:center; margin-bottom:15px; color:var(--text-muted);">
+                    Total de agendamentos: <strong>${appointments.length}</strong>
+                </p>
+            ` + appointments.map(a => {
+                const dateObj = new Date(a.date + 'T00:00:00');
+                const formattedDate = dateObj.toLocaleDateString('pt-BR', { 
+                    weekday: 'long', 
+                    day: '2-digit', 
+                    month: 'long', 
+                    year: 'numeric' 
+                });
+                return `
+                    <div class="appointment-item">
+                        <div class="appointment-info">
+                            <strong>${a.name}</strong><br>
+                            ${a.service}<br>
+                            ${formattedDate} às ${a.time}<br>
+                            <small>WhatsApp: ${a.phone}</small>
+                            ${a.notes ? `<br><small>Obs: ${a.notes}</small>` : ''}
+                        </div>
+                        <button class="btn-delete" onclick="deleteAppointment(${a.id})">Cancelar</button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function sendAppointmentsListToWhatsApp() {
+            const appointments = getAppointments()
+                .sort((a, b) => a.date.localeCompare(b.date) || a.time.localeCompare(b.time));
+
+            if (appointments.length === 0) {
+                alert('Não há agendamentos para enviar.');
+                return;
+            }
+
+            let message = `*Lista de Agendamentos - Fisioterapia Elizete Conceição*\n\n`;
+            message += `Total: ${appointments.length} agendamento(s)\n\n`;
+
+            appointments.forEach((a, index) => {
+                const dateObj = new Date(a.date + 'T00:00:00');
+                const formattedDate = dateObj.toLocaleDateString('pt-BR', { 
+                    weekday: 'short', 
+                    day: '2-digit', 
+                    month: 'short', 
+                    year: 'numeric' 
+                });
+                message += `${index + 1}. *${a.name}*\n`;
+                message += `   Serviço: ${a.service}\n`;
+                message += `   Data: ${formattedDate} às ${a.time}\n`;
+                message += `   WhatsApp: ${a.phone}\n`;
+                if (a.notes) message += `   Obs: ${a.notes}\n`;
+                message += `\n`;
+            });
+
+            message += `_Enviado pelo sistema de agendamento_`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/5594981072650?text=${encodedMessage}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function deleteAppointment(id) {
+            if (!confirm('Deseja realmente cancelar este agendamento?')) return;
+            deleteAppointmentFromDb(id)
+                .then(() => {
+                    // A lista será atualizada automaticamente pelo listener
+                })
+                .catch(err => {
+                    alert('Erro ao cancelar agendamento: ' + err.message);
+                });
+        }
+
+        function updateBookButton() {
+            const name = document.getElementById('clientName').value.trim();
+            const phone = document.getElementById('clientPhone').value.trim();
+            const date = document.getElementById('appointmentDate').value;
+            const btn = document.getElementById('bookBtn');
+            // Habilita o botão se os campos básicos estiverem preenchidos (mesmo se data/hora inválida)
+            // A validação de expediente será feita no clique
+            btn.disabled = !(name && phone && date && selectedService && selectedTime);
+        }
+
+        function validateDateTime(showMessage = true) {
+            const dateInput = document.getElementById('appointmentDate');
+            const date = dateInput.value;
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.classList.remove('show');
+            errorDiv.textContent = '';
+
+            if (!date || !selectedTime) return false;
+
+            const now = new Date();
+            const selectedDateTime = new Date(date + 'T' + selectedTime + ':00');
+
+            // Define today e selectedDay corretamente
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const selectedDay = new Date(selectedDateTime.getFullYear(), selectedDateTime.getMonth(), selectedDateTime.getDate());
+
+            // Data no passado
+            if (selectedDay < today) {
+                if (showMessage) {
+                    errorDiv.textContent = 'Não é possível agendar fora do expediente. Escolha outra data e hora.';
+                    errorDiv.classList.add('show');
+                }
+                return false;
+            }
+
+            // Verifica se é domingo (0 = domingo)
+            if (selectedDay.getDay() === 0) {
+                if (showMessage) {
+                    errorDiv.textContent = 'Não é possível agendar fora do expediente. Escolha outra data e hora.';
+                    errorDiv.classList.add('show');
+                }
+                return false;
+            }
+
+            // Se for hoje, o horário não pode ter passado
+            if (selectedDay.getTime() === today.getTime() && selectedDateTime <= now) {
+                if (showMessage) {
+                    errorDiv.textContent = 'Não é possível agendar fora do expediente. Escolha outra data e hora.';
+                    errorDiv.classList.add('show');
+                }
+                return false;
+            }
+
+            // Verifica se o horário está dentro do expediente (14:30 às 19:00)
+            const [hours, minutes] = selectedTime.split(':').map(Number);
+            const timeInMinutes = hours * 60 + minutes;
+            const startTime = 14 * 60 + 30; // 14:30
+            const endTime = 19 * 60;        // 19:00
+
+            if (timeInMinutes < startTime || timeInMinutes >= endTime) {
+                if (showMessage) {
+                    errorDiv.textContent = 'Não é possível agendar fora do expediente. Escolha outra data e hora.';
+                    errorDiv.classList.add('show');
+                }
+                return false;
+            }
+
+            // Verifica se o horário já está agendado
+            if (isSlotBooked(date, selectedTime)) {
+                if (showMessage) {
+                    errorDiv.textContent = `O horário ${selectedTime} do dia ${new Date(date + 'T00:00:00').toLocaleDateString('pt-BR')} já está ocupado. Por favor, escolha outro horário.`;
+                    errorDiv.classList.add('show');
+                }
+                return false;
+            }
+
+            return true;
+        }
+
+        function bookAppointment() {
+            if (!validateDateTime(true)) {
+                // Mensagem já é exibida pela validação
+                alert('Não é possível agendar fora do expediente. Escolha outra data e hora.');
+                return; // Não prossegue se inválido
+            }
+
+            const name = document.getElementById('clientName').value.trim();
+            const phone = document.getElementById('clientPhone').value.trim();
+            const date = document.getElementById('appointmentDate').value;
+            const notes = document.getElementById('notes').value.trim();
+
+            // Salva o agendamento no Firebase
+            const newAppointment = {
+                name,
+                phone,
+                service: selectedService.name,
+                date,
+                time: selectedTime,
+                notes,
+                createdAt: new Date().toISOString()
+            };
+
+            saveAppointment(newAppointment)
+                .then(() => {
+                    const dateObj = new Date(date + 'T00:00:00');
+                    const formattedDate = dateObj.toLocaleDateString('pt-BR', { 
+                        weekday: 'long', 
+                        day: '2-digit', 
+                        month: 'long', 
+                        year: 'numeric' 
+                    });
+
+                    let message = `Olá Elizete! Gostaria de agendar um horário.\n\n`;
+                    message += `*Nome:* ${name}\n`;
+                    message += `*WhatsApp:* ${phone}\n`;
+                    message += `*Serviço:* ${selectedService.name}\n`;
+                    message += `*Data:* ${formattedDate}\n`;
+                    message += `*Horário:* ${selectedTime}\n`;
+                    if (notes) message += `*Observações:* ${notes}\n`;
+                    message += `\nAguardo confirmação!`;
+
+                    const encodedMessage = encodeURIComponent(message);
+                    const whatsappUrl = `https://wa.me/5594981072650?text=${encodedMessage}`;
+                    window.open(whatsappUrl, '_blank');
+
+                    // Limpa seleção
+                    selectedTime = null;
+                    document.getElementById('clientName').value = '';
+                    document.getElementById('clientPhone').value = '';
+                    document.getElementById('notes').value = '';
+                    updateBookButton();
+                    document.getElementById('selectedServiceText').innerHTML = 'Selecione um serviço';
+                    selectedService = null;
+
+                    alert('Agendamento registrado com sucesso! A mensagem foi enviada para o WhatsApp.');
+                })
+                .catch(err => {
+                    alert('Erro ao salvar agendamento: ' + err.message);
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
